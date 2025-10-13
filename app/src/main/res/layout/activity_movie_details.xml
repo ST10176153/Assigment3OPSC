@@ -1,0 +1,85 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="70dp"
+    android:background="#000000">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#000000"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:titleTextColor="#FFFFFF" />
+
+        <ImageView
+            android:id="@+id/posterImageView"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/todo" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/yearTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/ratingTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/studioTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/plotTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#ffffff"/>
+
+
+        <Button
+            android:id="@+id/buttonAddToFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/details_add_to_favorites"
+            android:backgroundTint="#7C4DFF"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_sharp_background" />
+
+        <Button
+            android:id="@+id/buttonViewFavorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/details_view_favorites"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#7C4DFF"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_sharp_background"
+            />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="30dp"
+    android:background="#000000">
+
+    <!-- Toolbar with back button -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--  Main Content Container (moved below toolbar) -->
+    <LinearLayout
+        android:id="@+id/centerContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewLogo"
+            android:layout_width="200dp"
+            android:layout_height="250dp"
+            android:src="@drawable/app_logo"
+            android:contentDescription="@string/app_logo"
+            android:layout_gravity="center" />
+
+        <EditText
+            android:id="@+id/editTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="@string/username_hints"
+            android:inputType="textPersonName"
+            android:autofillHints="username"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginTop="16dp" />
+
+
+        <EditText
+            android:id="@+id/editTextEmailReg"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="@string/register_email"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginTop="12dp" />
+
+        <EditText
+            android:id="@+id/editTextPasswordReg"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="@string/register_password"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:backgroundTint="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginTop="12dp" />
+
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registerButton"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#7C4DFF"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/button_sharp_background"/>
+
+        <TextView
+            android:id="@+id/textViewReturningClient"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:text="@string/returning_user_login_here"
+            android:textColor="#FF00FF"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

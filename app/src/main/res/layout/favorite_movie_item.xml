@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="#121212"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/posterImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@string/favorite_movie_image"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/favorite_movie_title"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/studioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/studio"
+            android:textColor="#CCCCCC"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/criticsRatingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/critics_rating"
+            android:textColor="#CCCCCC"
+            android:textSize="14sp"
+            android:layout_marginTop="2dp" />
+
+
+        <EditText
+            android:id="@+id/editPlot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="Edit movies description"
+            android:hint="@string/movie_description"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FFFFFF"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:maxLines="10"
+            android:scrollbars="vertical" />
+
+        <LinearLayout
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/buttonUpdatePlot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/favorite_edit"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="@drawable/button_sharp_background"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="4dp"/>
+
+            <Button
+                android:id="@+id/buttonRemoveFavorite"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/favorite_delete"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="@drawable/button_sharp_background"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="4dp"/>
+
+            <Button
+                android:id="@+id/buttonDeletePlot"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/favorite_clear"
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="@drawable/button_sharp_background"
+                android:textColor="#FFFFFF" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
