@@ -113,11 +113,8 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun saveToFavorites(movieJson: JSONObject) {
-        val userEmail = FirebaseAuth.getInstance().currentUser?.email
-        if (userEmail.isNullOrEmpty()) {
-            Toast.makeText(this, "You must be logged in", Toast.LENGTH_SHORT).show()
-            return
-        }
+        val user = FirebaseAuth.getInstance().currentUser
+            ?: return Toast.makeText(this, "You must be logged in", Toast.LENGTH_SHORT).show()
 
         val imdbID = movieJson.optString("imdbID")
         if (imdbID.isEmpty()) {
@@ -130,20 +127,21 @@ class MovieDetailsActivity : AppCompatActivity() {
             "year" to movieJson.optString("Year"),
             "imdbID" to imdbID,
             "poster" to movieJson.optString("Poster"),
-            "description" to movieJson.optString("Plot"),
-            "userID" to userEmail
+            "description" to movieJson.optString("Plot")
         )
 
-        FirebaseFirestore.getInstance().collection("favorites")
-            .document(imdbID)
+        FirebaseFirestore.getInstance()
+            .collection("users").document(user.uid)
+            .collection("favorites").document(imdbID)
             .set(favoriteMovie)
             .addOnSuccessListener {
                 Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to add to Favorites", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to add to Favorites: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

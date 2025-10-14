@@ -46,14 +46,13 @@ class FavoriteMoviesActivity : AppCompatActivity() {
     }
 
     private fun loadFavoriteMovies() {
-        val userEmail = FirebaseAuth.getInstance().currentUser?.email
-        if (userEmail.isNullOrEmpty()) {
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user == null) {
             Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
             return
         }
 
-        db.collection("favorites")
-            .whereEqualTo("userID", userEmail)
+        db.collection("users").document(user.uid).collection("favorites")
             .get()
             .addOnSuccessListener { result ->
                 favoriteMovies.clear()
@@ -62,22 +61,18 @@ class FavoriteMoviesActivity : AppCompatActivity() {
                         title = document.getString("title") ?: "",
                         year = document.getString("year") ?: "",
                         imdbID = document.getString("imdbID") ?: document.id,
-                        type = document.getString("type") ?: "",
-                        poster = document.getString("poster") ?: "",
-                        studio = document.getString("studio") ?: "Unknown Studio", // new
-                        criticsRating = document.getString("criticsRating") ?: "N/A" // new
+                        type = "", // not used here
+                        poster = document.getString("poster") ?: ""
                     ).apply {
                         description = document.getString("description") ?: ""
                     }
-
-                    println("Loaded favorite movie: $movie")
                     favoriteMovies.add(movie)
                 }
                 adapter.notifyDataSetChanged()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to load favorites", Toast.LENGTH_SHORT).show()
-                println("Firestore fetch error: ${it.message}")
+                Toast.makeText(this, "Failed to load favorites: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 }
