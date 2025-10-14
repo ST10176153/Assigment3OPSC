@@ -14,11 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Assignment3OPSC.">
 
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".MovieActivity" />
-        <activity android:name=".MovieDetailsActivity" />
         <activity android:name=".FavoriteMoviesActivity" />
-
+        <activity android:name=".MovieDetailsActivity" />
+        <activity android:name=".MovieActivity" />
+        <activity android:name=".RegistrationActivity" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -27,6 +26,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".HomeActivity" android:exported="false" />
+        <activity android:name=".ProfileActivity" android:exported="false" />
+        <activity android:name=".ui.groups.GroupsHostActivity" android:exported="false" />
+
     </application>
+
 
 </manifest>

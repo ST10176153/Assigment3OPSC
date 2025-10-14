@@ -51,6 +51,18 @@ class MovieActivity : AppCompatActivity() {
         searchButton.setOnClickListener {
             searchMovies()
         }
+        findViewById<Button>(R.id.btnMovies).setOnClickListener {
+            // Already on Movies – optional: scroll to top or no-op
+            recyclerView.smoothScrollToPosition(0)
+        }
+
+        findViewById<Button>(R.id.btnGroups).setOnClickListener {
+            startActivity(Intent(this, com.example.assignment3opsc.ui.groups.GroupsHostActivity::class.java))
+        }
+
+        findViewById<Button>(R.id.btnProfile).setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

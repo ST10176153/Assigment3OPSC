@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -6,14 +7,12 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <!-- Back to login -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
         android:id="@+id/headingTextView"
@@ -26,7 +25,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="20dp" />
 
-    <!-- Search Field -->
     <EditText
         android:id="@+id/searchEditText"
         android:layout_width="match_parent"
@@ -40,7 +38,6 @@
         android:textSize="16sp"
         android:background="@drawable/edittext_sharp_background" />
 
-    <!-- Search Button -->
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
@@ -50,10 +47,51 @@
         android:background="@drawable/button_sharp_background"
         android:layout_marginTop="10dp" />
 
-    <!-- Recycler View -->
+    <!-- Use weight so list fills space above the bottom buttons -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp" />
+
+    <!-- Bottom nav-style buttons -->
+    <LinearLayout
+        android:id="@+id/bottomButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <Button
+            android:id="@+id/btnMovies"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Movies"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_sharp_background" />
+
+        <Space android:layout_width="8dp" android:layout_height="1dp"/>
+
+        <Button
+            android:id="@+id/btnGroups"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Groups"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_sharp_background" />
+
+        <Space android:layout_width="8dp" android:layout_height="1dp"/>
+
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Profile"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_sharp_background" />
+    </LinearLayout>
 </LinearLayout>
