@@ -41,5 +41,8 @@
     <string name="favorite_movie_image">favorite Movie Image</string>
     <string name="studio">Studio:</string>
     <string name="critics_rating">Critics Rating:</string>
+    <string name="help_and_support">Help &amp; Support</string>
+    <string name="privacy_and_safety">Privacy &amp; Safety</string>
+
 
 </resources>

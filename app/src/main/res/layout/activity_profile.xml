@@ -1,19 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#000000"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/tvProfileTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        android:textSize="22sp"/>
+        android:padding="16dp">
 
-    <!-- Add your real profile content here -->
-</LinearLayout>
+        <!-- CINEMATIC banner -->
+        <TextView
+            android:id="@+id/tvBrand"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="CINEMATIC"
+            android:textStyle="bold"
+            android:textSize="28sp"
+            android:gravity="center_vertical"
+            android:background="@android:color/black"
+            android:textColor="@android:color/white"
+            android:paddingLeft="16dp" />
+
+        <!-- Section title -->
+        <TextView
+            android:id="@+id/tvProfileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Profile"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="12dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/black" />
+
+        <!-- Header row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp">
+
+            <ImageView
+                android:id="@+id/imgAvatar"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:src="@drawable/app_logo"
+                android:contentDescription="@string/app_logo"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vickness"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tvHandle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="\@vickness_movies"
+                    android:textColor="#555555" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="vicknesslk@gmail.com"
+                    android:textColor="#555555" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Edit / Statistics buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/btnEditProfile"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:text="Edit Profile" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Statistics"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp" />
+        </LinearLayout>
+
+        <!-- Stats grid (2 x 2) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:background="#E6E6E6"
+            android:padding="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvMoviesSuggested"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Movies suggested"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvGroupsCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="3"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="groups"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvPreviews"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Previews"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/tvFavouritesCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="24"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Favourites"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Settings list (static rows) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp">
+
+            <TextView style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Settings" />
+
+            <TextView
+                android:id="@+id/rowSettings"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="Settings"
+                android:paddingStart="8dp" />
+
+            <TextView
+                android:id="@+id/rowPrivacy"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="@string/privacy_and_safety"
+                android:paddingStart="8dp" />
+
+            <TextView
+                android:id="@+id/rowNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="Notifications"
+                android:paddingStart="8dp" />
+
+            <TextView
+                android:id="@+id/rowHelp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:text="@string/help_and_support"
+                android:paddingStart="8dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSignOut"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Sign Out"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#D32F2F"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

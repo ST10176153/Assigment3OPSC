@@ -13,5 +13,9 @@ interface GroupDao {
 
     @Query("DELETE FROM user_groups WHERE id = :id")
     suspend fun deleteById(id: Long)
+
+    @Query("SELECT COUNT(*) FROM user_groups")
+    suspend fun countNow(): Int
+
 }
 
