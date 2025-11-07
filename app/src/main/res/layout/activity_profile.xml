@@ -48,6 +48,7 @@
             android:gravity="center_vertical"
             android:layout_marginTop="12dp">
 
+
             <ImageView
                 android:id="@+id/imgAvatar"
                 android:layout_width="72dp"
@@ -56,6 +57,7 @@
                 android:contentDescription="@string/app_logo"
                 android:background="@android:color/transparent"
                 android:scaleType="centerCrop" />
+
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -254,6 +256,13 @@
                 android:paddingStart="8dp" />
 
         </LinearLayout>
+        <Button
+            android:id="@+id/btnChangePhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Change photo"
+            android:layout_marginTop="8dp"/>
+
 
         <Button
             android:id="@+id/btnSignOut"
@@ -263,5 +272,7 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="#D32F2F"
             android:textColor="@android:color/white"/>
+
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

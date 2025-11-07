@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CINEMATIC</string>
+    <string name="login_email">E-pos</string>
+    <string name="login_password">Wagwoord</string>
+    <string name="login_button">Meld aan</string>
+    <string name="login_new_user_register_here">Nuwe gebruiker? Registreer</string>
+    <string name="search_button">Soek</string>
+    <string name="details_add_to_favorites">Voeg by Gunstelinge</string>
+    <string name="details_view_favorites">Sien Gunstelinge</string>
+</resources>

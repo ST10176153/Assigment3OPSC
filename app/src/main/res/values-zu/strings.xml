@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CINEMATIC</string>
+    <string name="login_email">I-imeyili</string>
+    <string name="login_password">Iphasiwedi</string>
+    <string name="login_button">Ngena</string>
+    <string name="login_new_user_register_here">Umsebenzisi omusha? Bhalisa</string>
+    <string name="search_button">Sesha</string>
+    <string name="details_add_to_favorites">Engeza Ezintandokazini</string>
+    <string name="details_view_favorites">Buka Ezintandokazini</string>
+</resources>

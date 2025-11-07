@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
+import com.example.assignment3opsc.data.AppDatabase
+import com.example.assignment3opsc.data.favorite.FavoriteEntity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -85,19 +89,19 @@ class MovieDetailsActivity : AppCompatActivity() {
                     val obj = JSONObject(res)
                     currentMovieJson = obj
 
-                    val title = obj.optString("Title", "N/A")
-                    val year = obj.optString("Year", "N/A")
-                    val rating = obj.optString("Rated", "N/A")
-                    val studio = obj.optString("Production", "Unknown")
-                    val plot = obj.optString("Plot", "No description available")
-                    val poster = obj.optString("Poster", "")
+                    val movieTitle = obj.optString("Title", "N/A")
+                    val year      = obj.optString("Year", "N/A")
+                    val rating    = obj.optString("Rated", "N/A")
+                    val studio    = obj.optString("Production", "Unknown")
+                    val plot      = obj.optString("Plot", "No description available")
+                    val poster    = obj.optString("Poster", "")
 
                     runOnUiThread {
-                        titleTextView?.text = title
-                        yearTextView?.text = "Year: $year"
+                        titleTextView?.text = movieTitle
+                        yearTextView?.text  = "Year: $year"
                         ratingTextView?.text = "Rated: $rating"
                         studioTextView?.text = "Studio: $studio"
-                        plotTextView?.text = plot
+                        plotTextView?.text   = plot
 
                         if (poster != "N/A" && poster.isNotEmpty()) {
                             Picasso.get().load(poster).into(posterImageView)
@@ -113,8 +117,10 @@ class MovieDetailsActivity : AppCompatActivity() {
     }
 
     private fun saveToFavorites(movieJson: JSONObject) {
-        val user = FirebaseAuth.getInstance().currentUser
-            ?: return Toast.makeText(this, "You must be logged in", Toast.LENGTH_SHORT).show()
+        val userEmail = FirebaseAuth.getInstance().currentUser?.email ?: run {
+            Toast.makeText(this, "You must be logged in", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val imdbID = movieJson.optString("imdbID")
         if (imdbID.isEmpty()) {
@@ -123,28 +129,41 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
 
         val favoriteMovie = hashMapOf(
-            "title" to movieJson.optString("Title"),
-            "year" to movieJson.optString("Year"),
-            "imdbID" to imdbID,
-            "poster" to movieJson.optString("Poster"),
-            "description" to movieJson.optString("Plot")
+            "title"       to movieJson.optString("Title"),     // <-- no movieTitle variable
+            "year"        to movieJson.optString("Year"),
+            "imdbID"      to imdbID,
+            "poster"      to movieJson.optString("Poster"),
+            "description" to movieJson.optString("Plot"),
+            "userID"      to userEmail
         )
 
         FirebaseFirestore.getInstance()
-            .collection("users").document(user.uid)
+            .collection("users").document(FirebaseAuth.getInstance().currentUser!!.uid)
             .collection("favorites").document(imdbID)
             .set(favoriteMovie)
-            .addOnSuccessListener {
-                Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Failed to add to Favorites: ${it.message}", Toast.LENGTH_SHORT).show()
-            }
+            .addOnSuccessListener { Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show() }
+            .addOnFailureListener { e -> Toast.makeText(this, "Failed to add to Favorites: ${e.message}", Toast.LENGTH_LONG).show() }
+
+        lifecycleScope.launch {
+            val db = AppDatabase.get(this@MovieDetailsActivity)
+            db.favoriteDao().upsert(
+                FavoriteEntity(imdbID, movietitle, year, poster, plot, pendingSync = true)
+            )
+            enqueueSync() // call the worker trigger above
+            Toast.makeText(this@MovieDetailsActivity, "Saved offline, will sync.", Toast.LENGTH_SHORT).show()
+        }
     }
+
+
+
+
+
 
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
+
+
 }

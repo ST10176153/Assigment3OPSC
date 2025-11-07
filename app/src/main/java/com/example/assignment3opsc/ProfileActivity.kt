@@ -7,12 +7,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.assignment3opsc.data.AppDatabase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -128,7 +130,28 @@ class ProfileActivity : AppCompatActivity() {
             tvGroupsCount.text = count.toString()
         }
 
-        // Movies suggested / Previews are placeholders in the mock
-        // (leave defaults or wire them up to your own data later)
+        // ProfileActivity.kt
+        private val pickImage = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri ->
+            uri ?: return@registerForActivityResult
+            val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return@registerForActivityResult
+            val ref = FirebaseStorage.getInstance().reference.child("profiles/$uid.jpg")
+            ref.putFile(uri)
+                .continueWithTask { ref.downloadUrl }
+                .addOnSuccessListener { url ->
+                    FirebaseFirestore.getInstance().collection("users").document(uid)
+                        .update("photoUrl", url.toString())
+                    // load with Picasso/Coil/Glide into ImageView
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        findViewById<Button>(R.id.btnChangePhoto).setOnClickListener {
+            pickImage.launch("image/*")
+        }
+
     }
 }
