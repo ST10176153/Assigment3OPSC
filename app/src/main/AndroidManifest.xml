@@ -19,6 +19,7 @@
         <activity android:name=".MovieActivity" />
         <activity android:name=".RegistrationActivity" />
         <activity
+
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
@@ -29,6 +30,8 @@
         <activity android:name=".HomeActivity" android:exported="false" />
         <activity android:name=".ProfileActivity" android:exported="false" />
         <activity android:name=".ui.groups.GroupsHostActivity" android:exported="false" />
+
+        <activity android:name=".FavoritesActivity" />
 
     </application>
 

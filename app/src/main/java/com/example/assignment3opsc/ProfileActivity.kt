@@ -131,7 +131,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         // ProfileActivity.kt
-        private val pickImage = registerForActivityResult(
+        val pickImage = registerForActivityResult(
             ActivityResultContracts.GetContent()
         ) { uri ->
             uri ?: return@registerForActivityResult

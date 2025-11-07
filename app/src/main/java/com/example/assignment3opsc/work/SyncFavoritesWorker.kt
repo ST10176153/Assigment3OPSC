@@ -1,12 +1,13 @@
-package com.example.assignment3opsc.work
+package com.example.assignment3opsc.work   // <- use your real package
 
 import android.content.Context
-import androidx.work.CoroutineWorker
-import androidx.work.WorkerParameters
+import androidx.work.*
 import com.example.assignment3opsc.data.AppDatabase
+import com.example.assignment3opsc.data.favorite.FavoriteEntity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+
 
 class SyncFavoritesWorker(
     appContext: Context,
@@ -39,6 +40,23 @@ class SyncFavoritesWorker(
             return Result.success()
         } catch (e: Exception) {
             return Result.retry()
+        }
+    }
+
+    companion object {
+        private const val WORK_NAME = "syncFavs"
+
+        fun enqueue(context: Context) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            val request = OneTimeWorkRequestBuilder<SyncFavoritesWorker>()
+                .setConstraints(constraints)
+                .build()
+
+            WorkManager.getInstance(context)
+                .enqueueUniqueWork(WORK_NAME, ExistingWorkPolicy.KEEP, request)
         }
     }
 }

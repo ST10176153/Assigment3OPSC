@@ -15,7 +15,6 @@ picasso = "2.8"
 recyclerview = "1.4.0"
 google-services = '4.4.2'
 firebaseAuth = "24.0.1"
-firebaseStorageKtx = "22.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,7 +32,8 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
-firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+
+firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

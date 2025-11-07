@@ -2,168 +2,181 @@ package com.example.assignment3opsc
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.lifecycleScope
 import com.example.assignment3opsc.data.AppDatabase
-import com.example.assignment3opsc.data.favorite.FavoriteEntity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.*
-import org.json.JSONException
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import org.json.JSONObject
-import java.io.IOException
+import com.example.assignment3opsc.data.favorite.FavoriteEntity
+import com.example.assignment3opsc.work.SyncFavoritesWorker
 
 class MovieDetailsActivity : AppCompatActivity() {
-    private val API_KEY = "147bd025"
 
-    private var titleTextView: TextView? = null
-    private var yearTextView: TextView? = null
-    private var ratingTextView: TextView? = null
-    private var studioTextView: TextView? = null
-    private var plotTextView: TextView? = null
-    private var posterImageView: ImageView? = null
-    private var addToFavoritesButton: Button? = null
+    // Views
+    private lateinit var posterImage: ImageView
+    private lateinit var titleText: TextView
+    private lateinit var yearText: TextView
+    private lateinit var ratingText: TextView
+    private lateinit var studioText: TextView
+    private lateinit var plotText: TextView
+    private lateinit var buttonAddToFavorites: Button
+    private lateinit var buttonViewFavorites: Button
 
-    private var currentMovieJson: JSONObject? = null
-    private var currentImdbID: String? = null
+    // Data we keep after fetching
+    private var imdbId: String = ""
+    private var movieTitle: String = ""
+    private var year: String = ""
+    private var poster: String = ""
+    private var plot: String = ""
+    private var rating: String = ""
+    private var studio: String = ""
+
+    // OMDb
+    private val client = OkHttpClient()
+    private val apiKey = "147bd025" // your key
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
 
-        findViewById<Button>(R.id.buttonViewFavorites).setOnClickListener {
-            startActivity(Intent(this, FavoriteMoviesActivity::class.java))
+        // Toolbar back
+        findViewById<Toolbar>(R.id.toolbar)?.let { tb ->
+            setSupportActionBar(tb)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowHomeEnabled(true)
+            supportActionBar?.title = ""
         }
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        // Bind views
+        posterImage = findViewById(R.id.posterImageView)
+        titleText = findViewById(R.id.titleTextView)
+        yearText = findViewById(R.id.yearTextView)
+        ratingText = findViewById(R.id.ratingTextView)
+        studioText = findViewById(R.id.studioTextView)
+        plotText = findViewById(R.id.plotTextView)
+        buttonAddToFavorites = findViewById(R.id.buttonAddToFavorites)
+        buttonViewFavorites = findViewById(R.id.buttonViewFavorites)
 
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            setDisplayShowHomeEnabled(true)
-            title = ""
-        }
+        // imdbID is passed from the list item
+        imdbId = intent.getStringExtra("imdbID") ?: ""
 
-        titleTextView = findViewById(R.id.titleTextView)
-        yearTextView = findViewById(R.id.yearTextView)
-        ratingTextView = findViewById(R.id.ratingTextView)
-        studioTextView = findViewById(R.id.studioTextView)
-        plotTextView = findViewById(R.id.plotTextView)
-        posterImageView = findViewById(R.id.posterImageView)
-        addToFavoritesButton = findViewById(R.id.buttonAddToFavorites)
-
-        val imdbID = intent.getStringExtra("imdbID")
-        if (imdbID.isNullOrEmpty()) {
-            Toast.makeText(this, "Error: Missing movie ID", Toast.LENGTH_SHORT).show()
+        if (imdbId.isBlank()) {
+            Toast.makeText(this, "Missing movie id", Toast.LENGTH_LONG).show()
             finish()
             return
         }
 
-        currentImdbID = imdbID
-        fetchMovieDetails(imdbID)
+        // Load details
+        fetchMovieDetails(imdbId)
 
-        addToFavoritesButton?.setOnClickListener {
-            currentMovieJson?.let {
-                saveToFavorites(it)
-            } ?: Toast.makeText(this, "Movie not loaded yet", Toast.LENGTH_SHORT).show()
+        // Add to favorites
+        buttonAddToFavorites.setOnClickListener {
+            addToFavorites()
+        }
+
+        // View favorites screen
+        buttonViewFavorites.setOnClickListener {
+            startActivity(Intent(this, FavoritesActivity::class.java))
         }
     }
-
-    private fun fetchMovieDetails(imdbID: String) {
-        val client = OkHttpClient()
-        val url = "https://www.omdbapi.com/?apikey=$API_KEY&i=$imdbID&plot=short"
-        val request = Request.Builder().url(url).build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val res = response.body?.string() ?: return
-                try {
-                    val obj = JSONObject(res)
-                    currentMovieJson = obj
-
-                    val movieTitle = obj.optString("Title", "N/A")
-                    val year      = obj.optString("Year", "N/A")
-                    val rating    = obj.optString("Rated", "N/A")
-                    val studio    = obj.optString("Production", "Unknown")
-                    val plot      = obj.optString("Plot", "No description available")
-                    val poster    = obj.optString("Poster", "")
-
-                    runOnUiThread {
-                        titleTextView?.text = movieTitle
-                        yearTextView?.text  = "Year: $year"
-                        ratingTextView?.text = "Rated: $rating"
-                        studioTextView?.text = "Studio: $studio"
-                        plotTextView?.text   = plot
-
-                        if (poster != "N/A" && poster.isNotEmpty()) {
-                            Picasso.get().load(poster).into(posterImageView)
-                        } else {
-                            posterImageView?.setImageResource(R.drawable.no_image_available)
-                        }
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                }
-            }
-        })
-    }
-
-    private fun saveToFavorites(movieJson: JSONObject) {
-        val userEmail = FirebaseAuth.getInstance().currentUser?.email ?: run {
-            Toast.makeText(this, "You must be logged in", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val imdbID = movieJson.optString("imdbID")
-        if (imdbID.isEmpty()) {
-            Toast.makeText(this, "Invalid movie data", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val favoriteMovie = hashMapOf(
-            "title"       to movieJson.optString("Title"),     // <-- no movieTitle variable
-            "year"        to movieJson.optString("Year"),
-            "imdbID"      to imdbID,
-            "poster"      to movieJson.optString("Poster"),
-            "description" to movieJson.optString("Plot"),
-            "userID"      to userEmail
-        )
-
-        FirebaseFirestore.getInstance()
-            .collection("users").document(FirebaseAuth.getInstance().currentUser!!.uid)
-            .collection("favorites").document(imdbID)
-            .set(favoriteMovie)
-            .addOnSuccessListener { Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show() }
-            .addOnFailureListener { e -> Toast.makeText(this, "Failed to add to Favorites: ${e.message}", Toast.LENGTH_LONG).show() }
-
-        lifecycleScope.launch {
-            val db = AppDatabase.get(this@MovieDetailsActivity)
-            db.favoriteDao().upsert(
-                FavoriteEntity(imdbID, movietitle, year, poster, plot, pendingSync = true)
-            )
-            enqueueSync() // call the worker trigger above
-            Toast.makeText(this@MovieDetailsActivity, "Saved offline, will sync.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
-
-
-
-
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 
+    private fun fetchMovieDetails(id: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val url = "https://www.omdbapi.com/?apikey=$apiKey&i=$id&plot=full"
+                val req = Request.Builder().url(url).build()
+                val res = client.newCall(req).execute()
+                val body = res.body?.string() ?: ""
 
+                val obj = JSONObject(body)
+                if (obj.optString("Response") != "True") {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MovieDetailsActivity, "Movie not found", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                    return@launch
+                }
+
+                // Collect fields
+                movieTitle = obj.optString("Title")
+                year = obj.optString("Year")
+                rating = obj.optString("Rated")
+                studio = obj.optString("Production", "Unknown")
+                plot = obj.optString("Plot")
+                poster = obj.optString("Poster")
+
+                // Update UI
+                withContext(Dispatchers.Main) {
+                    titleText.text = movieTitle
+                    yearText.text = "Year: $year"
+                    ratingText.text = "Rated: $rating"
+                    studioText.text = "Studio: $studio"
+                    plotText.text = plot
+                    if (poster.isNotBlank() && poster != "N/A") {
+                        Picasso.get().load(poster).into(posterImage)
+                    } else {
+                        posterImage.setImageResource(R.drawable.no_image_available) // optional placeholder
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MovieDetailsActivity, "Failed to load details", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun addToFavorites() {
+        if (imdbId.isBlank() || movieTitle.isBlank()) {
+            Toast.makeText(this, "Details not ready yet", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                val db = AppDatabase.get(this@MovieDetailsActivity)
+                db.favoriteDao().upsert(
+                    FavoriteEntity(
+                        imdbId = imdbId,
+                        title = movieTitle,
+                        year = year,
+                        poster = poster,
+                        description = plot,
+                        pending = 1,   // mark for sync
+                        synced = 0
+                    )
+                )
+
+                // queue background sync (make sure your worker has this companion helper)
+                SyncFavoritesWorker.enqueue(this@MovieDetailsActivity)
+
+                Toast.makeText(
+                    this@MovieDetailsActivity,
+                    "Added to favorites",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@MovieDetailsActivity,
+                    "Could not add to favorites",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
 }
